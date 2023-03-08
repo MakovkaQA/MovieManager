@@ -1,48 +1,40 @@
 package ru.netology.MovieManager;
 
+import ru.netology.Repository.Film;
+import ru.netology.Repository.Repository;
+
+import java.util.Objects;
+
 public class Manager {
-    private String[] movies = new String[0];
+    private Repository repo;
     private int maxLimit = 10;
 
-    public Manager() {
-
+    public Manager(Repository repo) {
+        this.repo = repo;
     }
 
-    public Manager(int newMaxLimit) {
+    public Manager(Repository repo, int newMaxLimit) {
+        this.repo = repo;
         this.maxLimit = newMaxLimit;
-
     }
 
-    public String[] getMovies() {
-        return movies;
+    public void add(Film item) {
+        repo.save(item);
     }
 
-    public void addMovie(String newMovie) {
-        String[] tmp = new String[movies.length + 1];
-        for (int i = 0; i < movies.length; i++) {
-            tmp[i] = movies[i];
-        }
-        tmp[tmp.length - 1] = newMovie;
-        movies = tmp;
-    }
-
-    public String[] findAll() {
-        return movies;
-    }
-
-
-    public String[] findLast() {
+    public Film[] findLast() {
         int resultLength;
+        Film[] all = repo.getItems();
 
-        if (movies.length < maxLimit) {
-            resultLength = movies.length;
+        if (all.length < maxLimit) {
+            resultLength = all.length;
         } else {
             resultLength = maxLimit;
         }
-        String[] result = new String[resultLength];
+        Film[] result = new Film[resultLength];
 
         for (int i = 0; i < result.length; i++) {
-            result[i] = movies[movies.length - 1 - i];
+            result[i] = all[all.length - 1 - i];
         }
         return result;
     }
